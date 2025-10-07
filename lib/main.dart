@@ -140,7 +140,7 @@ class _CounterFunctionsScreenState extends State<MyApp> {
             // historial de contador
             Expanded(
               child: ListView.builder(
-                itemCount: clickCounter + 1,
+                itemCount: clickCounter,
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: const Icon(Icons.check),
