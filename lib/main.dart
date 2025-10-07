@@ -41,9 +41,14 @@ class _CounterFunctionsScreenState extends State<MyApp> {
 
   // Metodo para actualizar el color del semaforo
   void updateTrafficLight() {
-    if (aforo / clickCounter < 0.60) {
+    if (aforo == 0 || clickCounter == 0) {
       activeColor = 'verde';
-    } else if (aforo / clickCounter >= 0.60 && aforo / clickCounter < 0.90) {
+      return;
+    }
+    double ratio = clickCounter / aforo;
+    if (ratio < 0.60) {
+      activeColor = 'verde';
+    } else if (ratio >= 0.60 && ratio < 0.90) {
       activeColor = 'amarillo';
     } else {
       activeColor = 'rojo';
@@ -88,6 +93,7 @@ class _CounterFunctionsScreenState extends State<MyApp> {
               ),
               onChanged: (value) {
                 aforo = int.tryParse(value) ?? 0;
+                updateTrafficLight();
                 setState(() {});
               },
             ),
@@ -114,7 +120,8 @@ class _CounterFunctionsScreenState extends State<MyApp> {
             CustomButton(
               icon: Icons.refresh_rounded,
               onPressed: () {
-                aforo == 0;
+                aforo = 0;
+                updateTrafficLight();
                 setState(() {});
               },
             ),
@@ -157,70 +164,77 @@ class _CounterFunctionsScreenState extends State<MyApp> {
             onPressed: () {
               if (clickCounter == 0 && clickCounter > aforo) return;
               clickCounter -= 5;
+              updateTrafficLight();
               setState(() {});
             },
           ),
           const SizedBox(width: 50.0),
           // boton -2
-          CustomButton(
-            icon: Icons.exposure_minus_2_outlined,
-            onPressed: () {
-              if (clickCounter == 0 && clickCounter > aforo) return;
-              clickCounter -= 2;
-              setState(() {});
-            },
-          ),
+            CustomButton(
+              icon: Icons.exposure_minus_2_outlined,
+              onPressed: () {
+                if (clickCounter == 0 && clickCounter > aforo) return;
+                clickCounter -= 2;
+                updateTrafficLight();
+                setState(() {});
+              },
+            ),
           const SizedBox(width: 50.0),
           // boton -1
-          CustomButton(
-            icon: Icons.exposure_minus_1_outlined,
-            onPressed: () {
-              if (clickCounter == 0 || clickCounter > aforo) return;
-              clickCounter--;
-              setState(() {});
-            },
-          ),
+            CustomButton(
+              icon: Icons.exposure_minus_1_outlined,
+              onPressed: () {
+                if (clickCounter == 0 || clickCounter > aforo) return;
+                clickCounter--;
+                updateTrafficLight();
+                setState(() {});
+              },
+            ),
           const SizedBox(width: 50.0),
           // refresh
-          CustomButton(
-            icon: Icons.refresh_rounded,
-            onPressed: () {
-              clickCounter = 0;
-              setState(() {});
-            },
-          ),
+            CustomButton(
+              icon: Icons.refresh_rounded,
+              onPressed: () {
+                clickCounter = 0;
+                updateTrafficLight();
+                setState(() {});
+              },
+            ),
           const SizedBox(
             width: 50.0,
           ), // se uso width en vez de height para el espaciado
           // boton + 1
-          CustomButton(
-            icon: Icons.plus_one,
-            onPressed: () {
-              if (clickCounter > aforo) return;
-              clickCounter++;
-              setState(() {});
-            },
-          ),
+            CustomButton(
+              icon: Icons.plus_one,
+              onPressed: () {
+                if (clickCounter > aforo) return;
+                clickCounter++;
+                updateTrafficLight();
+                setState(() {});
+              },
+            ),
           const SizedBox(width: 50.0),
           // boton +2
-          CustomButton(
-            icon: Icons.exposure_plus_2_outlined,
-            onPressed: () {
-              if (clickCounter > aforo) return;
-              clickCounter += 2;
-              setState(() {});
-            },
-          ),
+            CustomButton(
+              icon: Icons.exposure_plus_2_outlined,
+              onPressed: () {
+                if (clickCounter > aforo) return;
+                clickCounter += 2;
+                updateTrafficLight();
+                setState(() {});
+              },
+            ),
           const SizedBox(width: 50.0),
           // boton +5
-          ElevatedButton.icon(
-            label: const Text('+5'),
-            onPressed: () {
-              if (clickCounter > aforo) return;
-              clickCounter += 5;
-              setState(() {});
-            },
-          ),
+            ElevatedButton.icon(
+              label: const Text('+5'),
+              onPressed: () {
+                if (clickCounter > aforo) return;
+                clickCounter += 5;
+                updateTrafficLight();
+                setState(() {});
+              },
+            ),
         ],
       ),
     );
